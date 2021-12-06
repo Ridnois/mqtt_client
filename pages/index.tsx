@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
@@ -12,19 +12,18 @@ const Home: NextPage = () => {
   const options = {
     clientId: 'web_client',
   }
-  const [client, setClient] = useState();
   useEffect(() => {
     if (connectionStatus == 'disconnected') {
-      const client = mqtt.connect('mqtt://192.168.100.8:1884', options);
+      const client = mqtt.connect('mqtt://192.168.43.61:1884', options);
       client.on('connect', () => {
         setConnectionStatus('Connected');
         client.subscribe('ESP8266/DHT22/TEMP', (err) => {
-          if(err) {
+          if (err) {
             console.log(err)
           }
         })
-      client.subscribe('ESP8266/DHT22/HUM', (err) => {
-          if(err) {
+        client.subscribe('ESP8266/DHT22/HUM', (err) => {
+          if (err) {
             console.log(err)
           }
         })
@@ -32,17 +31,17 @@ const Home: NextPage = () => {
 
       client.on('message', (topic, message) => {
         console.log(topic, message.toString())
-        if(topic == 'ESP8266/DHT22/TEMP') {
+        if (topic == 'ESP8266/DHT22/TEMP') {
           setTemp(message.toString())
-        } else if(topic == 'ESP8266/DHT22/HUM') {
+        } else if (topic == 'ESP8266/DHT22/HUM') {
           setHum(message.toString())
         }
       })
     }
   })
- // useEffect(() => {
+  // useEffect(() => {
   //  const client = mqtt.connect('mqtt://192.168.100.8:1884', options)
-    //setClient(client);
+  //setClient(client);
   //})
 
   return (
@@ -74,7 +73,7 @@ const Home: NextPage = () => {
           </div>
           <div className={styles.card}>
             <h2>Status</h2>
-            <p>{ connectionStatus }</p>
+            <p>{connectionStatus}</p>
           </div>
         </div>
       </main>
